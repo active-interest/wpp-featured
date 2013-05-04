@@ -1,11 +1,19 @@
 <?php
 /*
- Plugin Name: WPP Featured
- Description: Mark posts, pages, and custom content as "featured" and display using a Widget, Shortcode, or theme functions
- Version: 1.0
- Author: David Higgins <higginsd@zoulcreations.com>
- Author URI: http://www.dphcoders.com
- */
+Plugin Name: WPP Featured
+Description: Mark posts, pages, and custom content as "featured" and display using a Widget, Shortcode, or theme functions
+Version: 1.0
+Author: David Higgins <higginsd@zoulcreations.com>
+Author URI: http://www.dphcoders.com
+
+License: A proper license for this work has yet to be selected, as such I reserve the right to select a license (MIT, GPL, LGPL, Apache, etc) at my discretion and all past, present and future variations of this work will then fall under said license.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
 
 new WPP_Featured;
 
