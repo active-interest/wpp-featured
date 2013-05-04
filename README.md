@@ -22,4 +22,5 @@ Todo
 - [ ] Add shortcode
 - [ ] Add Widget
 - [ ] Add Support for Category in Widget
+- 
 
