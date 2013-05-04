@@ -13,6 +13,23 @@ define('__WPP_FEATURED', 'wpp_is_featured');
 define('__WPP_FEATURED_NONCE', 'wpp_featured_nonce');
 
 class WPP_Featured {
+	public static function get_featured_posts($count = 5) {
+		$args = array(
+			'numberposts' => $count,
+			'offset' => 0,
+			'orderby' => 'post_date',
+			'order' => 'DESC',
+			'post_status' => 'publish',
+			'meta_query' => array(
+				array('key' => '_' . __WPP_FEATURED, 'compare' => '=', value => 'true'),
+			),
+		);
+		return get_posts($args, OBJECT);
+	}
+	
+	
+	
+	/** interal **/
 	public function __construct() {
 		if(is_admin()) {
 			add_action('save_post', array($this, 'save_post'));
@@ -54,14 +71,12 @@ class WPP_Featured {
 		} 
 		
 		$is_featured = $_POST[__WPP_FEATURED];
-		$was_featured = get_post_meta($post_id, '_' . __WPP_FEATURED, false);
-//		var_dump($is_featured); var_dump($was_featured);
 		update_post_meta( $post_id, '_' . __WPP_FEATURED, $is_featured);
 	}
 	
 	public function post_submitbox_misc_actions() {
 		global $post;
-		$featured = get_post_meta($post->ID, '_' . __WPP_FEATURED, TRUE);
+		$featured = get_post_meta($post->ID, '_' . __WPP_FEATURED, true);
         echo '<div class="misc-pub-section misc-pub-section-last" style="border-top: 1px solid #eee;">';
         wp_nonce_field(plugin_basename(__FILE__), __WPP_FEATURED_NONCE);
 		echo '<label for="' . __WPP_FEATURED . '" style="font-weight: bold;">Is Featured: </label>';
