@@ -13,8 +13,19 @@ To mark something as Featured, edit any post (supports any custom post content t
 and selected 'Is Featured' in the Publish Meta Box.
 
 To display your featured posts, you can use the *'Featured' widget*, the *[featured count=N]* shortcode, 
-or the *get_featured_posts($count)* theme function.
+or the *get_featured_posts($count, $args)* theme function.
 
+Example of using get_featured_posts($count, $args);
+
+    // get the 3 most recent featured posts
+    <?php $featured = WPP_Featured::get_featured_posts(3) ?>
+    // get the 3 most recent featured posts from category 4
+    <?php $featured = WPP_Featured::get_featured_posts(3, array('category'=>4)) ?>
+    
+    <?php foreach($featured as $post): ?>
+      <?php setup_postdata($post); ?>
+      <span style="color: red;"><?php the_title() ?></a>
+    <?php endforeach; ?>
 
 Todo
 ----
@@ -22,5 +33,4 @@ Todo
 - [ ] Add shortcode
 - [ ] Add Widget
 - [ ] Add Support for Category in Widget
-- 
 
