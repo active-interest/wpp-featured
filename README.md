@@ -34,3 +34,8 @@ Todo
 - [ ] Add Widget
 - [ ] Add Support for Category in Widget
 
+License
+-------
+A proper license for this work has yet to be selected, as such I reserve the right to select a 
+license (MIT, GPL, LGPL, Apache, etc) at my discretion and all past, present and future variations
+of this work will then fall under said license.
