@@ -13,7 +13,7 @@ define('__WPP_FEATURED', 'wpp_is_featured');
 define('__WPP_FEATURED_NONCE', 'wpp_featured_nonce');
 
 class WPP_Featured {
-	public static function get_featured_posts($count = 5) {
+	public static function get_featured_posts($count = 5, $addArgs = array()) {
 		$args = array(
 			'numberposts' => $count,
 			'offset' => 0,
@@ -24,7 +24,7 @@ class WPP_Featured {
 				array('key' => '_' . __WPP_FEATURED, 'compare' => '=', value => 'true'),
 			),
 		);
-		return get_posts($args, OBJECT);
+		return get_posts(array_merge($args, $addArgs), OBJECT);
 	}
 	
 	
