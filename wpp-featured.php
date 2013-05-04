@@ -14,17 +14,20 @@ define('__WPP_FEATURED_NONCE', 'wpp_featured_nonce');
 
 class WPP_Featured {
 	public static function get_featured_posts($count = 5, $addArgs = array()) {
-		$args = array(
+		if(!array_key_exists('meta_query', $addArgs) || !is_array($addArgs['meta_query'])) {
+			$addArgs['meta_query'] = array();
+		}
+		$addArgs['meta_query'][] = array('key' => '_' . __WPP_FEATURED, 'compare' => '=', value => 'true');
+		
+		$args = array_merge(array(
 			'numberposts' => $count,
 			'offset' => 0,
 			'orderby' => 'post_date',
 			'order' => 'DESC',
-			'post_status' => 'publish',
-			'meta_query' => array(
-				array('key' => '_' . __WPP_FEATURED, 'compare' => '=', value => 'true'),
-			),
-		);
-		return get_posts(array_merge($args, $addArgs), OBJECT);
+			'post_status' => 'publish'
+		), $addArgs);
+		
+		return get_posts($args, OBJECT);
 	}
 	
 	
