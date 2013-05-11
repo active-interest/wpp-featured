@@ -41,3 +41,5 @@ if (!defined('WPP_FEATURE_FILTER_FILE')) define('WPP_FEATURE_FILTER_FILE', 'wpp-
 if(!class_exists('WPP_ContentAlias')) require_once(WPP_FEATURE_PLUGIN_PATH . '/core/WPP_Featured.php');
 WPP_Featured::init();
 
+// widgets
+if(!class_exists('WPP_FeaturedListWidget')) require_once(WPP_FEATURE_PLUGIN_PATH . '/widgets/WPP_FeaturedList.php');
