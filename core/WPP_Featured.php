@@ -79,12 +79,13 @@ class WPP_Featured {
 		if (!current_user_can('edit_post', $post_id))
 			return $post_id;
 
-//		if(wp_is_post_revision($postId)) 
-//			return; //Check to make sure it is not a revision
+		if(wp_is_post_revision($post_id)) 
+			return; //Check to make sure it is not a revision
+
 		if (!wp_verify_nonce($_POST[self::settingsNonceName], plugin_basename(__FILE__)))
 			return $post_id;
 
-		delete_post_meta($post, self::postmetaAlias);
+		delete_post_meta($post_id, self::postmetaAlias);
 
 		if (!isset($_POST[self::postmetaAlias]))
 			return $post_id;
