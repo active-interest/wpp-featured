@@ -47,13 +47,14 @@ class WPP_FeaturedListWidget extends WP_Widget
 		extract($args);
 		$title = isset($instance['title']) ? apply_filters('widget_title', $instance['title']) : null;
 		$numposts = isset($instance['numberposts']) ? $instance['numberposts'] : null;
-		$slug = isset($instance['slug']) ? $instance['author_slug'] : null;
+		$slug = isset($instance['author_slug']) ? $instance['author_slug'] : null;
 		$user = get_user_by('slug', $slug);
 		$post_args = array(
 			'numberposts' => $numposts,
 		);
-		if($user) {
-			$post_args['author'] = $user;
+		if(!empty($slug)) {
+			$user = get_user_by('slug', $slug);
+			if($user) $post_args['author'] = $user->ID;
 		}
 
 		$posts = get_posts($post_args);
