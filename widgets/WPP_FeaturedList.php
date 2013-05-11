@@ -59,14 +59,16 @@ class WPP_FeaturedListWidget extends WP_Widget
 		$posts = get_posts($post_args);
 		if(count($posts) > 0) {
 			echo $before_widget;
-			if($title) echo '<h1 class="widget-title">' . $title . '</h1>';
+			if($title) echo '<h3 class="widget-title">' . $title . '</h3>';
 			
-			echo '<ul class="recent-posts">';
+			echo '<ul class="' . self::widgetIdBase . '">';
+			$lcv = 0;
 			foreach($posts as $post) {
-				echo '<li>';
-				echo '<a href="' . get_permalink($post->ID) . '">';
+				echo '<li class="' . ($lcv == 0 ? 'first item' : ($lcv == count($posts)-1 ? 'last item' : 'item')) . '">';
+				echo '<a href="' . get_permalink($post->ID) . '" title="' . get_the_title($post->ID) . '">';
 				echo get_the_title($post->ID);
 				echo '</a></li>';
+				$lcv++;
 			}
 			echo '</ul>';
 			echo $after_widget;
