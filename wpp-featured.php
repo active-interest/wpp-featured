@@ -1,97 +1,43 @@
 <?php
 /*
 Plugin Name: WPP Featured
+Plugin URI: http://wppoets.com/plugins/featured.html
 Description: Mark posts, pages, and custom content as "featured" and display using a Widget, Shortcode, or theme functions
 Version: 1.0
-Author: David Higgins <higginsd@zoulcreations.com>
-Author URI: http://www.dphcoders.com
-
-License: A proper license for this work has yet to be selected, as such I reserve the right to select a license (MIT, GPL, LGPL, Apache, etc) at my discretion and all past, present and future variations of this work will then fall under said license.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
-IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+Author: WP Poets <plugins@wppoets.com>
+Author URI: http://wppoets.com
+License: GPLv2 (dual licensed)
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
+/**  
+ * Copyright (c) 2013, WP Poets and/or its affiliates <plugins@wppoets.com>
+ * Portions of this distribution are copyrighted by:
+ *   Copyright (c) 2013 David Higgins <higginsd@zoulcreations.com>
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License, version 2, as 
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/**
+ * @author David Higgins <higginsd@zoulcreations.com>
+ */
 
-new WPP_Featured;
+if (!defined('ABSPATH')) die(); // We should not be loading this outside of wordpress
+if (!defined('WPP_FEATURE_VERSION_NUM')) define('WPP_FEATURE_VERSION_NUM', '1.0');
+if (!defined('WPP_FEATURE_PLUGIN_FILE')) define('WPP_FEATURE_PLUGIN_FILE', __FILE__);
+if (!defined('WPP_FEATURE_PLUGIN_PATH')) define('WPP_FEATURE_PLUGIN_PATH', dirname(__FILE__));
+if (!defined('WPP_FEATURE_FILTER_FILE')) define('WPP_FEATURE_FILTER_FILE', 'wpp-content-alias/wpp-featured.php');
 
-define('__WPP_FEATURED', 'wpp_is_featured');
-define('__WPP_FEATURED_NONCE', 'wpp_featured_nonce');
+if(!class_exists('WPP_ContentAlias')) require_once(WPP_FEATURE_PLUGIN_PATH . '/core/WPP_Featured.php');
+WPP_Featured::init();
 
-class WPP_Featured {
-	public static function get_featured_posts($count = 5, $addArgs = array()) {
-		if(!array_key_exists('meta_query', $addArgs) || !is_array($addArgs['meta_query'])) {
-			$addArgs['meta_query'] = array();
-		}
-		$addArgs['meta_query'][] = array('key' => '_' . __WPP_FEATURED, 'compare' => '=', value => 'true');
-		
-		$args = array_merge(array(
-			'numberposts' => $count,
-			'offset' => 0,
-			'orderby' => 'post_date',
-			'order' => 'DESC',
-			'post_status' => 'publish'
-		), $addArgs);
-		
-		return get_posts($args, OBJECT);
-	}
-	
-	
-	
-	/** interal **/
-	public function __construct() {
-		if(is_admin()) {
-			add_action('save_post', array($this, 'save_post'));
-			add_action('post_submitbox_misc_actions', array($this, 'post_submitbox_misc_actions'));
-			
-			add_filter('manage_posts_columns' , array($this, 'manage_posts_columns'));
-			add_action('manage_posts_custom_column' , array($this, 'manage_posts_custom_column'), 10, 2);
-		}
-	}
-	
-	public function manage_posts_columns($columns) {
-		return array_merge($columns, array(__WPP_FEATURED => 'Featured'));
-	}
-	
-	public function manage_posts_custom_column($column, $post_id) {
-		switch($column) {
-			case __WPP_FEATURED: {
-				$is_featured = get_post_meta($post_id, '_' . __WPP_FEATURED, false);
-				echo '<input type="checkbox" disabled', ( $is_featured ?  ' checked="checked"' : ''), '/>';
-			} break;
-		}
-	}
-	
-	public function save_post($post_id) {
-		if (!isset($_POST['post_type']))
-			return $post_id;
-
-		if (!wp_verify_nonce( $_POST[__WPP_FEATURED_NONCE], plugin_basename(__FILE__)))
-			return $post_id;
-
-		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) 
-			return $post_id;
-
-		if (!current_user_can( 'edit_post', $post_id))
-			return $post_id;
-
-		if (!isset($_POST[__WPP_FEATURED])) {
-			return $post_id;
-		} 
-		
-		$is_featured = $_POST[__WPP_FEATURED];
-		update_post_meta( $post_id, '_' . __WPP_FEATURED, $is_featured);
-	}
-	
-	public function post_submitbox_misc_actions() {
-		global $post;
-		$featured = get_post_meta($post->ID, '_' . __WPP_FEATURED, true);
-        echo '<div class="misc-pub-section misc-pub-section-last" style="border-top: 1px solid #eee;">';
-        wp_nonce_field(plugin_basename(__FILE__), __WPP_FEATURED_NONCE);
-		echo '<label for="' . __WPP_FEATURED . '" style="font-weight: bold;">Is Featured: </label>';
-		echo '<input name="' . __WPP_FEATURED . '" type="checkbox" id="' . __WPP_FEATURED . '" ' . (!empty($featured) ? 'checked="checked"' : '') . ' value="true" />';
-        echo '</div>';
-	}
-}
