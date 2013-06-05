@@ -31,7 +31,7 @@ class WPP_Featured {
 		if(!array_key_exists('meta_query', $addArgs) || !is_array($addArgs['meta_query'])) {
 			$addArgs['meta_query'] = array();
 		}
-		$addArgs['meta_query'][] = array('key' => self::postmetaAlias, 'compare' => '=', value => 'true');
+		$addArgs['meta_query'][] = array('key' => self::postmetaAlias, 'compare' => '=', 'value' => 'true');
 		
 		$args = array_merge(array(
 			'numberposts' => $count,

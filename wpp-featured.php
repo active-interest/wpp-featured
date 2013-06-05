@@ -38,7 +38,7 @@ if (!defined('WPP_FEATURE_PLUGIN_FILE')) define('WPP_FEATURE_PLUGIN_FILE', __FIL
 if (!defined('WPP_FEATURE_PLUGIN_PATH')) define('WPP_FEATURE_PLUGIN_PATH', dirname(__FILE__));
 if (!defined('WPP_FEATURE_FILTER_FILE')) define('WPP_FEATURE_FILTER_FILE', 'wpp-content-alias/wpp-featured.php');
 
-if(!class_exists('WPP_ContentAlias')) require_once(WPP_FEATURE_PLUGIN_PATH . '/core/WPP_Featured.php');
+if(!class_exists('WPP_Featured')) require_once(WPP_FEATURE_PLUGIN_PATH . '/core/WPP_Featured.php');
 WPP_Featured::init();
 
 // widgets
