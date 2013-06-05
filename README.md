@@ -15,7 +15,7 @@ and selected 'Is Featured' in the Publish Meta Box.
 To display your featured posts, you can use the *'Featured' widget*, the *[featured count=N]* shortcode, 
 or the *get_featured_posts($count, $args)* theme function.
 
-Example of using get_featured_posts($count, $args);
+### Using get_featured_posts($count, $args);
 
     // get the 3 most recent featured posts
     <?php $featured = WPP_Featured::get_featured_posts(3) ?>
@@ -26,6 +26,23 @@ Example of using get_featured_posts($count, $args);
       <?php setup_postdata($post); ?>
       <span style="color: red;"><?php the_title() ?></a>
     <?php endforeach; ?>
+
+### Using the Featured List Widget
+
+Add the widget to your widget area, and provided an optional Title.  You can also limit the featured list to only showing 
+featured posts from a specific author by entering the authors 'slug' into the field.  You can limit the number of posts by 
+entering the number of posts.
+
+The featured lists has the following CSS classes, for theming.
+
+    h3.widget-title /* the widget title */
+    ul.wpp-featured-widget /* the widget list */
+    li.item /* an item in the list */
+    li.first /* the first item in the list */
+    li.last /* the last item in the list */
+
+All items have the 'item' class, but the first and last items have the 'first' and 'last' classes respectively.
+
 
 Todo
 ----
