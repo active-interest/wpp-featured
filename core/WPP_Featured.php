@@ -74,6 +74,9 @@ class WPP_Featured {
 	public static function save_post($post_id) {
 		if (!isset($_POST['post_type']))
 			return $post_id;
+		if (!isset($_POST[self::settingsNonceName]))
+			return $post_id;
+
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) 
 			return $post_id;
 		if (!current_user_can('edit_post', $post_id))
