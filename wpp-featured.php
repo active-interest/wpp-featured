@@ -3,7 +3,7 @@
 Plugin Name: WPP Featured
 Plugin URI: http://wppoets.com/plugins/featured.html
 Description: Mark posts, pages, and custom content as "featured" and display using a Widget, Shortcode, or theme functions
-Version: 1.0
+Version: 1.0.1
 Author: WP Poets <plugins@wppoets.com>
 Author URI: http://wppoets.com
 License: GPLv2 (dual licensed)

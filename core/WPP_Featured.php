@@ -74,6 +74,9 @@ class WPP_Featured {
 	public static function save_post($post_id) {
 		if (!isset($_POST['post_type']))
 			return $post_id;
+		if (!isset($_POST[self::settingsNonceName]))
+			return $post_id;
+
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) 
 			return $post_id;
 		if (!current_user_can('edit_post', $post_id))
@@ -97,10 +100,10 @@ class WPP_Featured {
 	public static function post_submitbox_misc_actions() {
 		global $post;
 		$featured = get_post_meta($post->ID, self::postmetaAlias, true);
-        echo '<div class="misc-pub-section misc-pub-section-last" style="border-top: 1px solid #eee;">';
-        wp_nonce_field(plugin_basename(__FILE__), self::settingsNonceName);
+    echo '<div class="misc-pub-section misc-pub-section-last" style="border-top: 1px solid #eee;">';
+    wp_nonce_field(plugin_basename(__FILE__), self::settingsNonceName);
 		echo '<label for="' . self::postmetaAlias . '" style="font-weight: bold;">Is Featured: </label>';
 		echo '<input name="' . self::postmetaAlias . '" type="checkbox" id="' . self::postmetaAlias . '" ' . (!empty($featured) ? 'checked="checked"' : '') . ' value="true" />';
-        echo '</div>';
+    echo '</div>';
 	}
 }
