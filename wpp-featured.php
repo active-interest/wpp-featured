@@ -3,7 +3,7 @@
 Plugin Name: WPP Featured
 Plugin URI: http://wppoets.com/plugins/featured.html
 Description: Mark posts, pages, and custom content as "featured" and display using a Widget, Shortcode, or theme functions
-Version: 1.0.1
+Version: 1.1.0
 Author: WP Poets <plugins@wppoets.com>
 Author URI: http://wppoets.com
 License: GPLv2 (dual licensed)
@@ -39,7 +39,7 @@ if (!defined('WPP_FEATURE_PLUGIN_PATH')) define('WPP_FEATURE_PLUGIN_PATH', dirna
 if (!defined('WPP_FEATURE_FILTER_FILE')) define('WPP_FEATURE_FILTER_FILE', 'wpp-content-alias/wpp-featured.php');
 
 if(!class_exists('WPP_Featured')) require_once(WPP_FEATURE_PLUGIN_PATH . '/core/WPP_Featured.php');
-WPP_Featured::init();
+new WPP_Featured();
 
 // widgets
 if(!class_exists('WPP_FeaturedListWidget')) require_once(WPP_FEATURE_PLUGIN_PATH . '/widgets/WPP_FeaturedList.php');
