@@ -20,14 +20,14 @@
  */
 
 class WPP_Featured {
-	private static $_initialized = false;
-	private static $_settings = array();
+	private $_initialized = false;
+	private $_settings = array();
 	
 	const postmetaAlias = '_wpp_is_featured';
 	const settingsNonceName = 'wpp_featured_settings_noncename';
 	
 	
-	public static function get_featured_posts($count = 5, $addArgs = array()) {
+	public function get_featured_posts($count = 5, $addArgs = array()) {
 		if(!array_key_exists('meta_query', $addArgs) || !is_array($addArgs['meta_query'])) {
 			$addArgs['meta_query'] = array();
 		}
@@ -47,22 +47,22 @@ class WPP_Featured {
 	
 	
 	/** interal **/
-	public static function init() {
-		if(self::$_initialized) return;
+	public function __construct() {
+		if($this->_initialized) return;
 		if(is_admin()) {
-			add_action('save_post', array(__CLASS__, 'save_post'));
-			add_action('post_submitbox_misc_actions', array(__CLASS__, 'post_submitbox_misc_actions'));
+			add_action('save_post', array($this, 'save_post'));
+			add_action('post_submitbox_misc_actions', array($this, 'post_submitbox_misc_actions'), 10, 1);
 			
-			add_filter('manage_posts_columns' , array(__CLASS__, 'manage_posts_columns'));
-			add_action('manage_posts_custom_column' , array(__CLASS__, 'manage_posts_custom_column'), 10, 2);
+			add_filter('manage_posts_columns' , array($this, 'manage_posts_columns'));
+			add_action('manage_posts_custom_column' , array($this, 'manage_posts_custom_column'), 10, 2);
 		}
 	}
 	
-	public static function manage_posts_columns($columns) {
+	public function manage_posts_columns($columns) {
 		return array_merge($columns, array(self::postmetaAlias => 'Featured'));
 	}
 	
-	public static function manage_posts_custom_column($column, $post_id) {
+	public function manage_posts_custom_column($column, $post_id) {
 		switch($column) {
 			case self::postmetaAlias: {
 				$is_featured = get_post_meta($post_id, self::postmetaAlias, false);
@@ -71,7 +71,7 @@ class WPP_Featured {
 		}
 	}
 	
-	public static function save_post($post_id) {
+	public function save_post($post_id) {
 		if (!isset($_POST['post_type']))
 			return $post_id;
 		if (!isset($_POST[self::settingsNonceName]))
@@ -97,10 +97,11 @@ class WPP_Featured {
 		update_post_meta($post_id, self::postmetaAlias, $is_featured);
 	}
 	
-	public static function post_submitbox_misc_actions() {
+	public function post_submitbox_misc_actions($post) {
 		global $post;
+		echo "<script>console.error('submit box');</script>";
 		$featured = get_post_meta($post->ID, self::postmetaAlias, true);
-    echo '<div class="misc-pub-section misc-pub-section-last" style="border-top: 1px solid #eee;">';
+    echo '<div class="misc-pub-featured misc-pub-section misc-pub-section-last" style="border-top: 1px solid #eee;">';
     wp_nonce_field(plugin_basename(__FILE__), self::settingsNonceName);
 		echo '<label for="' . self::postmetaAlias . '" style="font-weight: bold;">Is Featured: </label>';
 		echo '<input name="' . self::postmetaAlias . '" type="checkbox" id="' . self::postmetaAlias . '" ' . (!empty($featured) ? 'checked="checked"' : '') . ' value="true" />';
