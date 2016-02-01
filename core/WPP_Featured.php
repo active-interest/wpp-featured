@@ -99,7 +99,6 @@ class WPP_Featured {
 	
 	public function post_submitbox_misc_actions($post) {
 		global $post;
-		echo "<script>console.error('submit box');</script>";
 		$featured = get_post_meta($post->ID, self::postmetaAlias, true);
     echo '<div class="misc-pub-featured misc-pub-section misc-pub-section-last" style="border-top: 1px solid #eee;">';
     wp_nonce_field(plugin_basename(__FILE__), self::settingsNonceName);
